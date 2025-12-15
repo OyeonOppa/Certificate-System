@@ -67,30 +67,15 @@ document.getElementById('verifyForm').addEventListener('submit', async function(
     // Show loading
     document.getElementById('verifyLoading').style.display = 'flex';
     
-    try {
-        const response = await fetch(`${WEB_APP_URL}?action=verifyStudent`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                course: selectedCourse,
-                studentId: studentId,
-                fullName: fullName
-            })
-        });
-        
-        const result = await response.json();
-        
-        // Hide loading
+    // ใช้ JSONP แทน fetch
+    const callbackName = 'verifyCallback_' + Date.now();
+    window[callbackName] = function(result) {
         document.getElementById('verifyLoading').style.display = 'none';
         
         if (result.success) {
             if (result.data.alreadyRegistered) {
-                // Already registered
                 showAlreadyRegistered(result.data.data);
             } else {
-                // Not registered yet - proceed to step 3
                 studentData = result.data.data;
                 populateStep3();
                 goToStep(3);
@@ -99,11 +84,29 @@ document.getElementById('verifyForm').addEventListener('submit', async function(
             alert('ไม่พบข้อมูลของท่านในระบบ\nกรุณาตรวจสอบรหัสนักศึกษาและชื่อ-นามสกุลให้ถูกต้อง');
         }
         
-    } catch (error) {
-        console.error('Error:', error);
+        // Cleanup
+        delete window[callbackName];
+        document.body.removeChild(script);
+    };
+    
+    const params = new URLSearchParams({
+        action: 'verifyStudent',
+        callback: callbackName,
+        course: selectedCourse,
+        studentId: studentId,
+        fullName: fullName
+    });
+    
+    const script = document.createElement('script');
+    script.src = `${WEB_APP_URL}?${params.toString()}`;
+    script.onerror = function() {
         document.getElementById('verifyLoading').style.display = 'none';
         alert('เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง');
-    }
+        delete window[callbackName];
+        document.body.removeChild(script);
+    };
+    
+    document.body.appendChild(script);
 });
 
 function populateStep3() {
@@ -145,25 +148,9 @@ document.getElementById('confirmForm').addEventListener('submit', async function
     // Show loading
     document.getElementById('confirmLoading').style.display = 'flex';
     
-    try {
-        const response = await fetch(`${WEB_APP_URL}?action=registerAttendance`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                course: selectedCourse,
-                studentId: studentData.studentId,
-                fullName: studentData.fullName,
-                email: email,
-                phone: phoneClean,
-                attendance: attendance.value
-            })
-        });
-        
-        const result = await response.json();
-        
-        // Hide loading
+    // ใช้ JSONP
+    const callbackName = 'registerCallback_' + Date.now();
+    window[callbackName] = function(result) {
         document.getElementById('confirmLoading').style.display = 'none';
         
         if (result.success) {
@@ -172,11 +159,32 @@ document.getElementById('confirmForm').addEventListener('submit', async function
             alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาลองใหม่อีกครั้ง');
         }
         
-    } catch (error) {
-        console.error('Error:', error);
+        // Cleanup
+        delete window[callbackName];
+        document.body.removeChild(script);
+    };
+    
+    const params = new URLSearchParams({
+        action: 'registerAttendance',
+        callback: callbackName,
+        course: selectedCourse,
+        studentId: studentData.studentId,
+        fullName: studentData.fullName,
+        email: email,
+        phone: phoneClean,
+        attendance: attendance.value
+    });
+    
+    const script = document.createElement('script');
+    script.src = `${WEB_APP_URL}?${params.toString()}`;
+    script.onerror = function() {
         document.getElementById('confirmLoading').style.display = 'none';
         alert('เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง');
-    }
+        delete window[callbackName];
+        document.body.removeChild(script);
+    };
+    
+    document.body.appendChild(script);
 });
 
 // ========================================

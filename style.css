@@ -1,4 +1,4 @@
-/* สีธีม: #1a543b (เขียวเข้ม) #c6a357 (ทอง) #FFFFFF (ขาว) */
+/* สีธีม: สีขาวเป็นหลัก (70%) สีเขียวเป็นรอง (20%) สีทองเป็นเสริม (10%) */
 * {
     margin: 0;
     padding: 0;
@@ -12,16 +12,18 @@
     --text-dark: #1f2937;
     --text-gray: #6b7280;
     --bg-light: #f9fafb;
+    --bg-lighter: #fefefe;
     --border-color: #e5e7eb;
     --success-color: #10b981;
     --danger-color: #ef4444;
-    --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
 }
 
 body {
     font-family: 'Sarabun', 'Sukhumvit Set', Arial, sans-serif;
-    background: linear-gradient(135deg, var(--primary-green) 0%, #2d6a4f 100%);
+    background: var(--bg-light);
     min-height: 100vh;
     padding: 20px;
     color: var(--text-dark);
@@ -31,29 +33,30 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     background: var(--white);
-    border-radius: 16px;
+    border-radius: 12px;
     box-shadow: var(--shadow-lg);
     overflow: hidden;
 }
 
 /* Header */
 .header {
-    background: linear-gradient(135deg, var(--primary-green) 0%, #2d6a4f 100%);
-    color: var(--white);
+    background: var(--white);
+    color: var(--primary-green);
     padding: 40px 30px;
     text-align: center;
+    border-bottom: 3px solid var(--primary-green);
 }
 
 .header-content h1 {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 10px;
+    color: var(--primary-green);
 }
 
 .subtitle {
-    font-size: 1.1rem;
-    opacity: 0.9;
-    color: var(--primary-gold);
+    font-size: 1rem;
+    color: var(--text-gray);
 }
 
 /* Progress Bar */
@@ -62,7 +65,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 40px 20px;
-    background: var(--bg-light);
+    background: var(--white);
 }
 
 .progress-step {
@@ -76,11 +79,11 @@ body {
     height: 50px;
     border-radius: 50%;
     background: var(--white);
-    border: 3px solid var(--border-color);
+    border: 2px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 1.2rem;
     color: var(--text-gray);
     transition: all 0.3s ease;
@@ -88,14 +91,13 @@ body {
 }
 
 .progress-step.active .step-circle {
-    background: var(--primary-gold);
-    border-color: var(--primary-gold);
+    background: var(--primary-green);
+    border-color: var(--primary-green);
     color: var(--white);
-    transform: scale(1.1);
 }
 
 .step-label {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-gray);
 }
 
@@ -106,7 +108,7 @@ body {
 
 .progress-line {
     width: 100px;
-    height: 3px;
+    height: 2px;
     background: var(--border-color);
     margin: 0 10px 30px;
 }
@@ -115,6 +117,7 @@ body {
 .main-content {
     padding: 40px 30px;
     min-height: 500px;
+    background: var(--white);
 }
 
 .step-content {
@@ -142,12 +145,14 @@ body {
     color: var(--primary-green);
     margin-bottom: 10px;
     text-align: center;
+    font-weight: 600;
 }
 
 .instruction {
     text-align: center;
     color: var(--text-gray);
     margin-bottom: 30px;
+    font-size: 0.95rem;
 }
 
 /* Course Grid */
@@ -160,7 +165,7 @@ body {
 
 .course-card {
     background: var(--white);
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 25px;
     text-align: center;
@@ -169,47 +174,46 @@ body {
 }
 
 .course-card:hover {
-    border-color: var(--primary-gold);
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-5px);
+    border-color: var(--primary-green);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
 }
 
 .course-icon {
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin-bottom: 15px;
 }
 
 .course-card h3 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: var(--primary-green);
     margin-bottom: 10px;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .course-card p {
     color: var(--text-gray);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     line-height: 1.6;
     margin-bottom: 20px;
     min-height: 80px;
 }
 
 .btn-select {
-    background: var(--primary-gold);
+    background: var(--primary-green);
     color: var(--white);
     border: none;
-    padding: 12px 30px;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
     width: 100%;
 }
 
 .btn-select:hover {
-    background: #b89347;
-    transform: scale(1.05);
+    background: #2d6a4f;
 }
 
 /* Form */
@@ -219,13 +223,19 @@ body {
     border-radius: 8px;
     text-align: center;
     margin-bottom: 30px;
-    border: 2px solid var(--primary-gold);
+    border: 1px solid var(--primary-green);
+}
+
+.selected-course-display .label {
+    color: var(--text-gray);
+    font-size: 0.9rem;
 }
 
 .selected-course-display .course-name {
     color: var(--primary-green);
     font-size: 1.2rem;
-    font-weight: 700;
+    font-weight: 600;
+    margin-left: 8px;
 }
 
 .form {
@@ -236,17 +246,18 @@ body {
 .form-section {
     margin-bottom: 35px;
     padding: 25px;
-    background: var(--bg-light);
-    border-radius: 12px;
+    background: var(--bg-lighter);
+    border-radius: 8px;
     border: 1px solid var(--border-color);
 }
 
 .section-title {
     color: var(--primary-green);
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 2px solid var(--primary-gold);
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
 }
 
 .form-group {
@@ -255,9 +266,10 @@ body {
 
 .form-group label {
     display: block;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--text-dark);
     margin-bottom: 8px;
+    font-size: 0.95rem;
 }
 
 .required {
@@ -267,16 +279,17 @@ body {
 .form-group input {
     width: 100%;
     padding: 12px 16px;
-    border: 2px solid var(--border-color);
-    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
     font-size: 1rem;
     transition: all 0.3s ease;
+    background: var(--white);
 }
 
 .form-group input:focus {
     outline: none;
-    border-color: var(--primary-gold);
-    box-shadow: 0 0 0 3px rgba(198, 163, 87, 0.1);
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(26, 84, 59, 0.05);
 }
 
 .field-note {
@@ -289,16 +302,18 @@ body {
 
 /* Student Info Card */
 .student-info-card, .event-info-card {
-    background: var(--bg-light);
+    background: var(--bg-lighter);
     padding: 25px;
-    border-radius: 12px;
+    border-radius: 8px;
     margin-bottom: 25px;
-    border: 1px solid var(--primary-gold);
+    border: 1px solid var(--border-color);
 }
 
 .student-info-card h3, .event-info-card h3 {
     color: var(--primary-green);
     margin-bottom: 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .info-row {
@@ -312,14 +327,24 @@ body {
 }
 
 .info-label {
-    font-weight: 600;
+    font-weight: 500;
     color: var(--text-gray);
     min-width: 150px;
+    font-size: 0.9rem;
 }
 
 .info-value {
     color: var(--text-dark);
     font-weight: 500;
+}
+
+.event-details {
+    color: var(--text-dark);
+    line-height: 1.8;
+}
+
+.event-details p {
+    margin-bottom: 8px;
 }
 
 /* Radio Options */
@@ -332,16 +357,17 @@ body {
 .radio-option {
     display: flex;
     align-items: flex-start;
-    padding: 20px;
-    border: 2px solid var(--border-color);
-    border-radius: 12px;
+    padding: 18px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
+    background: var(--white);
 }
 
 .radio-option:hover {
-    border-color: var(--primary-gold);
-    background: var(--bg-light);
+    border-color: var(--primary-green);
+    background: var(--bg-lighter);
 }
 
 .radio-option input[type="radio"] {
@@ -350,8 +376,8 @@ body {
 }
 
 .radio-custom {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     border: 2px solid var(--border-color);
     border-radius: 50%;
     margin-right: 15px;
@@ -359,16 +385,21 @@ body {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    margin-top: 2px;
 }
 
 .radio-custom::after {
     content: '';
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    background: var(--primary-gold);
+    background: var(--primary-green);
     transform: scale(0);
     transition: transform 0.3s ease;
+}
+
+.radio-option input[type="radio"]:checked ~ .radio-custom {
+    border-color: var(--primary-green);
 }
 
 .radio-option input[type="radio"]:checked ~ .radio-custom::after {
@@ -376,12 +407,15 @@ body {
 }
 
 .radio-text strong {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--primary-green);
+    display: block;
+    margin-bottom: 4px;
 }
 
 .radio-text small {
     color: var(--text-gray);
+    font-size: 0.85rem;
 }
 
 /* Buttons */
@@ -393,38 +427,38 @@ body {
 }
 
 .btn-primary, .btn-back {
-    padding: 14px 40px;
+    padding: 12px 32px;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .btn-primary {
-    background: var(--primary-gold);
+    background: var(--primary-green);
     color: var(--white);
 }
 
 .btn-primary:hover {
-    background: #b89347;
-    transform: translateY(-2px);
+    background: #2d6a4f;
 }
 
 .btn-primary.btn-large {
-    padding: 16px 50px;
-    font-size: 1.1rem;
+    padding: 14px 40px;
+    font-size: 1.05rem;
 }
 
 .btn-back {
     background: var(--white);
     color: var(--text-gray);
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
 }
 
 .btn-back:hover {
     background: var(--bg-light);
+    border-color: var(--text-gray);
 }
 
 /* Success/Info Cards */
@@ -434,16 +468,38 @@ body {
 }
 
 .success-icon, .info-icon {
-    font-size: 5rem;
+    font-size: 4rem;
     margin-bottom: 20px;
 }
 
 .success-card h2 {
     color: var(--success-color);
+    font-weight: 600;
+    margin-bottom: 15px;
 }
 
 .info-card h2 {
     color: var(--primary-green);
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.success-text, .info-text {
+    color: var(--text-gray);
+    margin-bottom: 20px;
+}
+
+.success-info, .registered-info {
+    background: var(--bg-lighter);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: left;
+    border: 1px solid var(--border-color);
+}
+
+.success-info p, .registered-info p {
+    margin-bottom: 10px;
 }
 
 /* Loading */
@@ -453,7 +509,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -462,10 +518,10 @@ body {
 }
 
 .spinner {
-    width: 60px;
-    height: 60px;
-    border: 5px solid rgba(255, 255, 255, 0.3);
-    border-top-color: var(--primary-gold);
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top-color: var(--primary-green);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -477,6 +533,7 @@ body {
 .loading-overlay p {
     color: var(--white);
     margin-top: 20px;
+    font-size: 0.95rem;
 }
 
 /* Footer */
@@ -485,12 +542,18 @@ body {
     padding: 25px;
     text-align: center;
     border-top: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    color: var(--text-gray);
+}
+
+.admin-link {
+    margin-top: 10px;
 }
 
 .admin-link a {
     color: var(--primary-green);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .admin-link a:hover {
@@ -499,13 +562,27 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .header-content h1 {
+        font-size: 1.5rem;
+    }
+    
     .course-grid {
         grid-template-columns: 1fr;
     }
+    
     .button-group {
         flex-direction: column;
     }
+    
     .btn-primary, .btn-back {
         width: 100%;
+    }
+    
+    .main-content {
+        padding: 30px 20px;
     }
 }

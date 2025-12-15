@@ -8,13 +8,9 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const password = document.getElementById('adminPassword').value;
     showLoading('กำลังตรวจสอบรหัสผ่าน...');
     
-    try {
-        const response = await fetch(`${WEB_APP_URL}?action=authenticateAdmin`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password })
-        });
-        const result = await response.json();
+    // ใช้ JSONP แทน fetch
+    const callbackName = 'authCallback_' + Date.now();
+    window[callbackName] = function(result) {
         hideLoading();
         
         if (result.success && result.data.authenticated) {
@@ -24,10 +20,28 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         } else {
             alert('รหัสผ่านไม่ถูกต้อง');
         }
-    } catch (error) {
+        
+        // Cleanup
+        delete window[callbackName];
+        document.body.removeChild(script);
+    };
+    
+    const params = new URLSearchParams({
+        action: 'authenticateAdmin',
+        callback: callbackName,
+        password: password
+    });
+    
+    const script = document.createElement('script');
+    script.src = `${WEB_APP_URL}?${params.toString()}`;
+    script.onerror = function() {
         hideLoading();
         alert('เกิดข้อผิดพลาด');
-    }
+        delete window[callbackName];
+        document.body.removeChild(script);
+    };
+    
+    document.body.appendChild(script);
 });
 
 function logout() {
@@ -41,19 +55,36 @@ function logout() {
 // Load Data
 async function loadAllData() {
     showLoading('กำลังโหลดข้อมูล...');
-    try {
-        const response = await fetch(`${WEB_APP_URL}?action=getAdminData`);
-        const result = await response.json();
+    
+    const callbackName = 'dataCallback_' + Date.now();
+    window[callbackName] = function(result) {
         if (result.success) {
             allStudentsData = result.data;
             updateDashboard();
             updateTable();
         }
         hideLoading();
-    } catch (error) {
+        
+        // Cleanup
+        delete window[callbackName];
+        document.body.removeChild(script);
+    };
+    
+    const params = new URLSearchParams({
+        action: 'getAdminData',
+        callback: callbackName
+    });
+    
+    const script = document.createElement('script');
+    script.src = `${WEB_APP_URL}?${params.toString()}`;
+    script.onerror = function() {
         hideLoading();
         alert('เกิดข้อผิดพลาดในการโหลดข้อมูล');
-    }
+        delete window[callbackName];
+        document.body.removeChild(script);
+    };
+    
+    document.body.appendChild(script);
 }
 
 function refreshData() { loadAllData(); }
