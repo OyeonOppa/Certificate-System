@@ -46,7 +46,105 @@ function goToStep(step) {
 function selectCourse(course) {
     selectedCourse = course;
     document.getElementById('selectedCourseDisplay').textContent = course;
+    
+    // โหลดรายชื่อนักศึกษาสำหรับหลักสูตรนี้
+    loadStudentList(course);
+    
     goToStep(2);
+}
+
+// โหลดรายชื่อนักศึกษาจาก Google Sheets
+function loadStudentList(course) {
+    const optionsContainer = document.getElementById('customOptions');
+    optionsContainer.innerHTML = '<div class="custom-option" data-value="">กำลังโหลดรายชื่อ...</div>';
+    
+    const callbackName = 'studentListCallback_' + Date.now();
+    window[callbackName] = function(result) {
+        if (result.success && result.data.length > 0) {
+            optionsContainer.innerHTML = '';
+            
+            result.data.forEach(student => {
+                const option = document.createElement('div');
+                option.className = 'custom-option';
+                option.dataset.value = JSON.stringify({
+                    studentId: student.studentId,
+                    fullName: student.fullName
+                });
+                option.textContent = `${student.studentId} - ${student.fullName}`;
+                
+                // เมื่อคลิกเลือก
+                option.addEventListener('click', function() {
+                    selectCustomOption(this);
+                });
+                
+                optionsContainer.appendChild(option);
+            });
+            
+            // เพิ่ม custom dropdown functionality
+            initCustomDropdown();
+        } else {
+            optionsContainer.innerHTML = '<div class="custom-option" data-value="">ไม่พบข้อมูลนักศึกษา</div>';
+        }
+        
+        // Cleanup
+        delete window[callbackName];
+        document.body.removeChild(script);
+    };
+    
+    const params = new URLSearchParams({
+        action: 'getStudentList',
+        callback: callbackName,
+        course: course
+    });
+    
+    const script = document.createElement('script');
+    script.src = `${WEB_APP_URL}?${params.toString()}`;
+    script.onerror = function() {
+        optionsContainer.innerHTML = '<div class="custom-option" data-value="">เกิดข้อผิดพลาดในการโหลดข้อมูล</div>';
+        delete window[callbackName];
+        document.body.removeChild(script);
+    };
+    
+    document.body.appendChild(script);
+}
+
+// Custom Dropdown Functions
+function initCustomDropdown() {
+    const customSelect = document.getElementById('customSelect');
+    const trigger = customSelect.querySelector('.custom-select-trigger');
+    
+    // Toggle dropdown
+    trigger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        customSelect.classList.toggle('open');
+    });
+    
+    // Close when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!customSelect.contains(e.target)) {
+            customSelect.classList.remove('open');
+        }
+    });
+}
+
+function selectCustomOption(optionElement) {
+    const value = optionElement.dataset.value;
+    const text = optionElement.textContent;
+    
+    if (!value) return;
+    
+    // Update UI
+    document.getElementById('selectedText').textContent = text;
+    document.getElementById('studentSelect').value = value;
+    
+    // Update selected state
+    document.querySelectorAll('.custom-option').forEach(opt => {
+        opt.classList.remove('selected');
+    });
+    optionElement.classList.add('selected');
+    
+    // Close dropdown
+    document.getElementById('customSelect').classList.remove('open');
 }
 
 // ========================================
@@ -56,32 +154,49 @@ function selectCourse(course) {
 document.getElementById('verifyForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
-    const studentId = document.getElementById('studentId').value.trim();
-    const fullName = document.getElementById('fullName').value.trim();
+    const selectedOption = document.getElementById('studentSelect').value;
+    const pdpaConsent = document.getElementById('pdpaConsent').checked;
     
-    if (!studentId || !fullName) {
-        alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+    if (!selectedOption) {
+        alert('กรุณาเลือกชื่อของท่าน');
         return;
     }
+    
+    if (!pdpaConsent) {
+        alert('กรุณายินยอมให้เก็บรวบรวมข้อมูลส่วนบุคคล');
+        return;
+    }
+    
+    const student = JSON.parse(selectedOption);
+    const studentId = student.studentId;
+    const fullName = student.fullName;
     
     // Show loading
     document.getElementById('verifyLoading').style.display = 'flex';
     
-    // ใช้ JSONP แทน fetch
+    // ใช้ JSONP
     const callbackName = 'verifyCallback_' + Date.now();
     window[callbackName] = function(result) {
         document.getElementById('verifyLoading').style.display = 'none';
         
         if (result.success) {
+            // ตรวจสอบว่าลงทะเบียนแล้วหรือยัง
             if (result.data.alreadyRegistered) {
+                // ลงทะเบียนแล้ว - แสดงข้อมูลที่มีอยู่
                 showAlreadyRegistered(result.data.data);
             } else {
+                // ยังไม่ลงทะเบียน - ดำเนินการต่อ
                 studentData = result.data.data;
                 populateStep3();
                 goToStep(3);
             }
         } else {
-            alert('ไม่พบข้อมูลของท่านในระบบ\nกรุณาตรวจสอบรหัสนักศึกษาและชื่อ-นามสกุลให้ถูกต้อง');
+            // กรณีลงทะเบียนซ้ำ
+            if (result.data && result.data.alreadyRegistered) {
+                showAlreadyRegistered(result.data.data);
+            } else {
+                alert('เกิดข้อผิดพลาดในการตรวจสอบข้อมูล');
+            }
         }
         
         // Cleanup
@@ -214,7 +329,7 @@ function showSuccess(attendance, email, phone) {
                 <p><strong>อีเมล:</strong> ${email}</p>
                 <p><strong>เบอร์โทรศัพท์:</strong> ${formatPhone(phone)}</p>
                 <p><strong>สถานะ:</strong> <span style="color: #f59e0b; font-weight: bold;">ไม่เข้าร่วม</span></p>
-                <p style="margin-top: 15px; color: #6b7280;">สถาบันจะจัดส่งใบประกาศนียบัตรให้ท่านทางไปรษณีย์ลงทะเบียน<br>และจะติดต่อกลับเพื่อยืนยันที่อยู่ในการจัดส่ง</p>
+                <p style="margin-top: 15px; color: #6b7280;">กรุณาติดต่อเจ้าหน้าที่หลักสูตร<br>เพื่อประสานงานขอรับใบประกาศนียบัตรภายหลัง</p>
             </div>
         `;
     }
@@ -271,81 +386,9 @@ function showAlreadyRegistered(data) {
 }
 
 // ========================================
-// Demo Mode (สำหรับทดสอบ - ลบออกตอน Deploy จริง)
+// ========================================
+// Demo Mode - ถูกปิดการใช้งานแล้ว
 // ========================================
 
-// *** ลบโค้ดนี้ออกเมื่อเชื่อมต่อกับ Google Apps Script จริง ***
-
-// ถ้า WEB_APP_URL ยังไม่ได้ตั้ง ให้ใช้ Demo Mode
-if (WEB_APP_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE') {
-    console.log('🔴 Demo Mode Active - ใช้ข้อมูลจำลอง');
-    
-    // Override fetch function for demo
-    const originalFetch = window.fetch;
-    window.fetch = async function(url, options) {
-        if (url.includes('verifyStudent')) {
-            const body = JSON.parse(options.body);
-            
-            // จำลองการหาข้อมูล
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            // ตัวอย่างข้อมูลนักศึกษา
-            const mockStudents = {
-                'ปปร.': [
-                    { studentId: '001', fullName: 'นายสมชาย ใจดี' },
-                    { studentId: '002', fullName: 'นางสาวสมหญิง สวยงาม' },
-                ],
-                'ปรม.': [
-                    { studentId: '101', fullName: 'นายสมศักดิ์ ดีมาก' },
-                ],
-                'ปศส.': [
-                    { studentId: '201', fullName: 'นางสาวสมใจ รักเรียน' },
-                ],
-                'สสสส.': [
-                    { studentId: '301', fullName: 'นายสมบูรณ์ มีชัย' },
-                ],
-                'ปบถ.': [
-                    { studentId: '401', fullName: 'นางสาวสมทรง แข็งแรง' },
-                ]
-            };
-            
-            const students = mockStudents[body.course] || [];
-            const found = students.find(s => 
-                s.studentId === body.studentId && 
-                s.fullName.toLowerCase() === body.fullName.toLowerCase()
-            );
-            
-            if (found) {
-                return {
-                    json: async () => ({
-                        success: true,
-                        data: {
-                            alreadyRegistered: false,
-                            data: found
-                        }
-                    })
-                };
-            } else {
-                return {
-                    json: async () => ({
-                        success: false,
-                        message: 'Student not found'
-                    })
-                };
-            }
-        }
-        
-        if (url.includes('registerAttendance')) {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            return {
-                json: async () => ({
-                    success: true,
-                    message: 'Registration successful'
-                })
-            };
-        }
-        
-        return originalFetch(url, options);
-    };
-}
+// *** ระบบนี้ใช้ JSONP ไม่ต้องการ Demo Mode ***
+// *** กรุณาใส่ WEB_APP_URL ที่ถูกต้องด้านบน ***

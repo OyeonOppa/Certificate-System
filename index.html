@@ -1,233 +1,361 @@
 <!DOCTYPE html>
 <html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/icon.ico" type="image/png" />
     <title>ระบบลงทะเบียนรับใบประกาศนียบัตร - สถาบันพระปกเกล้า</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-content">
-                <h1>ระบบลงทะเบียนรับใบประกาศนียบัตร</h1>
-                <p class="subtitle">สถาบันพระปกเกล้า</p>
-            </div>
-        </header>
+      <!-- Header -->
+      <header class="header">
+        <div class="header-content">
+          <h1>ระบบลงทะเบียนรับใบประกาศนียบัตร</h1>
+          <p class="subtitle">สถาบันพระปกเกล้า</p>
+        </div>
+      </header>
 
-        <!-- Progress Bar -->
-        <div class="progress-bar">
-            <div class="progress-step active" data-step="1">
-                <div class="step-circle">1</div>
-                <div class="step-label">เลือกหลักสูตร</div>
+      <!-- Progress Bar -->
+      <div class="progress-bar">
+        <div class="progress-step active" data-step="1">
+          <div class="step-circle">1</div>
+          <div class="step-label">เลือกหลักสูตร</div>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="2">
+          <div class="step-circle">2</div>
+          <div class="step-label">ยืนยันตัวตน</div>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="3">
+          <div class="step-circle">3</div>
+          <div class="step-label">ยืนยันการเข้าร่วม</div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Step 1: Select Course -->
+        <div id="step1" class="step-content active">
+          <h2>เลือกหลักสูตรของท่าน</h2>
+          <p class="instruction">กรุณาเลือกหลักสูตรที่ท่านสำเร็จการศึกษา</p>
+
+          <div class="course-grid">
+            <div class="course-card" onclick="selectCourse('ปปร.')">
+              <div class="course-icon">📚</div>
+              <h3>ปปร.</h3>
+              <p>
+                หลักสูตรประกาศนียบัตรชั้นสูง<br />การเมืองการปกครองในระบอบประชาธิปไตย<br />สำหรับนักบริหารระดับสูง
+              </p>
+              <button class="btn-select">เลือกหลักสูตรนี้</button>
             </div>
-            <div class="progress-line"></div>
-            <div class="progress-step" data-step="2">
-                <div class="step-circle">2</div>
-                <div class="step-label">ยืนยันตัวตน</div>
+
+            <div class="course-card" onclick="selectCourse('ปรม.')">
+              <div class="course-icon">⚖️</div>
+              <h3>ปรม.</h3>
+              <p>
+                หลักสูตรประกาศนียบัตรชั้นสูง<br />การบริหารงานภาครัฐและกฎหมายมหาชน
+              </p>
+              <button class="btn-select">เลือกหลักสูตรนี้</button>
             </div>
-            <div class="progress-line"></div>
-            <div class="progress-step" data-step="3">
-                <div class="step-circle">3</div>
-                <div class="step-label">ยืนยันการเข้าร่วม</div>
+
+            <div class="course-card" onclick="selectCourse('ปศส.')">
+              <div class="course-icon">💼</div>
+              <h3>ปศส.</h3>
+              <p>
+                หลักสูตรประกาศนียบัตรชั้นสูง<br />การบริหารเศรษฐกิจสาธารณะ<br />สำหรับนักบริหารระดับสูง
+              </p>
+              <button class="btn-select">เลือกหลักสูตรนี้</button>
             </div>
+
+            <div class="course-card" onclick="selectCourse('สสสส.')">
+              <div class="course-icon">🕊️</div>
+              <h3>สสสส.</h3>
+              <p>
+                หลักสูตรประกาศนียบัตรชั้นสูง<br />การเสริมสร้างสังคมสันติสุข
+              </p>
+              <button class="btn-select">เลือกหลักสูตรนี้</button>
+            </div>
+
+            <div class="course-card" onclick="selectCourse('ปบถ.')">
+              <div class="course-icon">🏘️</div>
+              <h3>ปบถ.</h3>
+              <p>
+                หลักสูตรประกาศนียบัตรชั้นสูง<br />การบริหารงานพัฒนาท้องถิ่นที่ยั่งยืน
+              </p>
+              <button class="btn-select">เลือกหลักสูตรนี้</button>
+            </div>
+          </div>
         </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            
-            <!-- Step 1: Select Course -->
-            <div id="step1" class="step-content active">
-                <h2>เลือกหลักสูตรของท่าน</h2>
-                <p class="instruction">กรุณาเลือกหลักสูตรที่ท่านสำเร็จการศึกษา</p>
-                
-                <div class="course-grid">
-                    <div class="course-card" onclick="selectCourse('ปปร.')">
-                        <div class="course-icon">📚</div>
-                        <h3>ปปร.</h3>
-                        <p>หลักสูตรประกาศนียบัตรชั้นสูง<br>การเมืองการปกครองในระบอบประชาธิปไตย<br>สำหรับนักบริหารระดับสูง</p>
-                        <button class="btn-select">เลือกหลักสูตรนี้</button>
-                    </div>
+        <!-- Step 2: Verify Identity -->
+        <div id="step2" class="step-content">
+          <h2>ยืนยันตัวตน</h2>
+          <p class="instruction">กรุณาเลือกชื่อของท่านจากรายการด้านล่าง</p>
 
-                    <div class="course-card" onclick="selectCourse('ปรม.')">
-                        <div class="course-icon">⚖️</div>
-                        <h3>ปรม.</h3>
-                        <p>หลักสูตรประกาศนียบัตรชั้นสูง<br>การบริหารงานภาครัฐและกฎหมายมหาชน</p>
-                        <button class="btn-select">เลือกหลักสูตรนี้</button>
-                    </div>
+          <div class="selected-course-display">
+            <span class="label">หลักสูตรที่เลือก:</span>
+            <span id="selectedCourseDisplay" class="course-name"></span>
+          </div>
 
-                    <div class="course-card" onclick="selectCourse('ปศส.')">
-                        <div class="course-icon">💼</div>
-                        <h3>ปศส.</h3>
-                        <p>หลักสูตรประกาศนียบัตรชั้นสูง<br>การบริหารเศรษฐกิจสาธารณะ<br>สำหรับนักบริหารระดับสูง</p>
-                        <button class="btn-select">เลือกหลักสูตรนี้</button>
-                    </div>
+          <!-- PDPA Notice -->
+          <div class="pdpa-notice">
+            <div class="pdpa-header">
+              <span class="pdpa-icon">🔒</span>
+              <h4>ประกาศความเป็นส่วนตัว (PDPA)</h4>
+            </div>
+            <div class="pdpa-content">
+              <p>
+                สถาบันพระปกเกล้าจัดเก็บข้อมูลส่วนบุคคลของท่าน (ชื่อ-นามสกุล,
+                อีเมล, เบอร์โทรศัพท์) เพื่อวัตถุประสงค์ในการ:
+              </p>
+              <ul>
+                <li>จัดส่งอีเมลยืนยันการลงทะเบียน</li>
+                <li>แจ้งเตือนก่อนวันงาน</li>
+                <li>ติดต่อกรณีเร่งด่วน</li>
+                <li>ติดต่อสอบถามข้อมูลการรับใบประกาศนียบัตร กรณีไม่เข้าร่วม</li>
+              </ul>
+              <p class="pdpa-footer">
+                ข้อมูลของท่านจะถูกเก็บรักษาอย่างปลอดภัยและใช้เฉพาะวัตถุประสงค์ที่ระบุเท่านั้น
+              </p>
+            </div>
+          </div>
 
-                    <div class="course-card" onclick="selectCourse('สสสส.')">
-                        <div class="course-icon">🕊️</div>
-                        <h3>สสสส.</h3>
-                        <p>หลักสูตรประกาศนียบัตรชั้นสูง<br>การเสริมสร้างสังคมสันติสุข</p>
-                        <button class="btn-select">เลือกหลักสูตรนี้</button>
-                    </div>
+          <form id="verifyForm" class="form">
+            <div class="form-group">
+              <label for="studentSelect"
+                >เลือกชื่อ-นามสกุลของท่าน <span class="required">*</span></label
+              >
 
-                    <div class="course-card" onclick="selectCourse('ปบถ.')">
-                        <div class="course-icon">🏘️</div>
-                        <h3>ปบถ.</h3>
-                        <p>หลักสูตรประกาศนียบัตรชั้นสูง<br>การบริหารงานพัฒนาท้องถิ่นที่ยั่งยืน</p>
-                        <button class="btn-select">เลือกหลักสูตรนี้</button>
+              <!-- Custom Dropdown -->
+              <div class="custom-select-wrapper">
+                <div class="custom-select" id="customSelect">
+                  <div class="custom-select-trigger">
+                    <span id="selectedText">-- กรุณาเลือกชื่อของท่าน --</span>
+                    <span class="arrow">▼</span>
+                  </div>
+                  <div class="custom-options" id="customOptions">
+                    <div class="custom-option" data-value="">
+                      กำลังโหลดรายชื่อ...
                     </div>
+                  </div>
                 </div>
+                <input
+                  type="hidden"
+                  id="studentSelect"
+                  name="studentSelect"
+                  required
+                />
+              </div>
+
+              <small class="field-note"
+                >หากไม่พบชื่อของท่าน กรุณาติดต่อเจ้าหน้าที่</small
+              >
             </div>
 
-            <!-- Step 2: Verify Identity -->
-            <div id="step2" class="step-content">
-                <h2>ยืนยันตัวตน</h2>
-                <p class="instruction">กรุณากรอกข้อมูลเพื่อยืนยันตัวตนของท่าน</p>
-                
-                <div class="selected-course-display">
-                    <span class="label">หลักสูตรที่เลือก:</span>
-                    <span id="selectedCourseDisplay" class="course-name"></span>
-                </div>
-
-                <form id="verifyForm" class="form">
-                    <div class="form-group">
-                        <label for="studentId">รหัสนักศึกษา <span class="required">*</span></label>
-                        <input type="text" id="studentId" placeholder="กรอกรหัสนักศึกษา" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="fullName">ชื่อ-นามสกุล <span class="required">*</span></label>
-                        <input type="text" id="fullName" placeholder="กรอกชื่อ-นามสกุลให้ตรงกับในฐานข้อมูล" required>
-                    </div>
-
-                    <div class="button-group">
-                        <button type="button" class="btn-back" onclick="goToStep(1)">ย้อนกลับ</button>
-                        <button type="submit" class="btn-primary">ยืนยันตัวตน</button>
-                    </div>
-                </form>
-
-                <div id="verifyLoading" class="loading-overlay" style="display: none;">
-                    <div class="spinner"></div>
-                    <p>กำลังตรวจสอบข้อมูล...</p>
-                </div>
+            <div class="form-group pdpa-consent">
+              <label class="checkbox-label">
+                <input type="checkbox" id="pdpaConsent" required />
+                <span class="checkbox-text">
+                  ข้าพเจ้ายินยอมให้สถาบันพระปกเกล้าเก็บรวบรวม ใช้
+                  และเปิดเผยข้อมูลส่วนบุคคลของข้าพเจ้าตามวัตถุประสงค์ที่ระบุข้างต้น
+                  <span class="required">*</span>
+                </span>
+              </label>
             </div>
 
-            <!-- Step 3: Confirm Attendance -->
-            <div id="step3" class="step-content">
-                <h2>ยืนยันการเข้าร่วม</h2>
-                <p class="instruction">กรุณาตรวจสอบข้อมูลและยืนยันการเข้าร่วมพิธีมอบใบประกาศนียบัตร</p>
-
-                <div class="student-info-card">
-                    <h3>ข้อมูลของท่าน</h3>
-                    <div class="info-row">
-                        <span class="info-label">หลักสูตร:</span>
-                        <span id="confirmCourse" class="info-value"></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">รหัสนักศึกษา:</span>
-                        <span id="confirmStudentId" class="info-value"></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">ชื่อ-นามสกุล:</span>
-                        <span id="confirmFullName" class="info-value"></span>
-                    </div>
-                </div>
-
-                <div class="event-info-card">
-                    <h3>📅 กำหนดการพิธีมอบใบประกาศนียบัตร</h3>
-                    <div class="event-details">
-                        <p><strong>วันที่:</strong> วันพฤหัสบดีที่ 15 มกราคม 2568</p>
-                        <p><strong>เวลา:</strong> 13.00 - 16.00 น.</p>
-                        <p><strong>สถานที่:</strong> ห้องประชุมใหญ่ สถาบันพระปกเกล้า</p>
-                    </div>
-                </div>
-
-                <form id="confirmForm" class="form">
-                    <div class="form-section">
-                        <h3 class="section-title">ข้อมูลติดต่อ</h3>
-                        
-                        <div class="form-group">
-                            <label for="email">อีเมล <span class="required">*</span></label>
-                            <input type="email" id="email" placeholder="example@email.com" required>
-                            <small class="field-note">สำหรับรับอีเมลยืนยันและแจ้งเตือนก่อนวันงาน</small>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="phone">เบอร์โทรศัพท์ <span class="required">*</span></label>
-                            <input type="tel" id="phone" placeholder="08X-XXX-XXXX" pattern="[0-9]{10}|[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
-                            <small class="field-note">สำหรับติดต่อกรณีเร่งด่วน (ตัวอย่าง: 0812345678)</small>
-                        </div>
-                    </div>
-
-                    <div class="form-section">
-                        <h3 class="section-title">การเข้าร่วมพิธี</h3>
-                        
-                        <div class="form-group">
-                            <div class="radio-group">
-                                <label class="radio-option attend">
-                                    <input type="radio" name="attendance" value="เข้าร่วม" required>
-                                    <span class="radio-custom"></span>
-                                    <span class="radio-text">
-                                        <strong>เข้าร่วม</strong>
-                                        <small>ท่านจะเข้ารับใบประกาศนียบัตรด้วยตนเอง</small>
-                                    </span>
-                                </label>
-                                <label class="radio-option not-attend">
-                                    <input type="radio" name="attendance" value="ไม่เข้าร่วม" required>
-                                    <span class="radio-custom"></span>
-                                    <span class="radio-text">
-                                        <strong>ไม่สามารถเข้าร่วมได้</strong>
-                                        <small>สถาบันจะจัดส่งใบประกาศนียบัตรให้ท่านทางไปรษณีย์</small>
-                                    </span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="button-group">
-                        <button type="button" class="btn-back" onclick="goToStep(2)">ย้อนกลับ</button>
-                        <button type="submit" class="btn-primary btn-large">ยืนยันการลงทะเบียน</button>
-                    </div>
-                </form>
-
-                <div id="confirmLoading" class="loading-overlay" style="display: none;">
-                    <div class="spinner"></div>
-                    <p>กำลังบันทึกข้อมูล...</p>
-                </div>
+            <div class="button-group">
+              <button type="button" class="btn-back" onclick="goToStep(1)">
+                ย้อนกลับ
+              </button>
+              <button type="submit" class="btn-primary">ยืนยันตัวตน</button>
             </div>
+          </form>
 
-            <!-- Success Message -->
-            <div id="successMessage" class="step-content">
-                <div class="success-card">
-                    <div class="success-icon">✅</div>
-                    <h2>ลงทะเบียนสำเร็จ!</h2>
-                    <p class="success-text">ขอบคุณที่ลงทะเบียน ระบบได้ส่งอีเมลยืนยันไปยังที่อยู่อีเมลของท่านแล้ว</p>
-                    <div id="successDetails" class="success-details"></div>
-                    <button class="btn-primary" onclick="location.reload()">กลับหน้าแรก</button>
-                </div>
-            </div>
-
-            <!-- Already Registered -->
-            <div id="alreadyRegistered" class="step-content">
-                <div class="info-card">
-                    <div class="info-icon">ℹ️</div>
-                    <h2>ท่านได้ลงทะเบียนแล้ว</h2>
-                    <p class="info-text">ระบบพบว่าท่านได้ทำการลงทะเบียนไปแล้ว</p>
-                    <div id="registeredDetails" class="registered-details"></div>
-                    <button class="btn-primary" onclick="location.reload()">กลับหน้าแรก</button>
-                </div>
-            </div>
-
+          <div id="verifyLoading" class="loading-overlay" style="display: none">
+            <div class="spinner"></div>
+            <p>กำลังตรวจสอบข้อมูล...</p>
+          </div>
         </div>
 
-        <!-- Footer -->
-        <footer class="footer">
-            <p>© 2568 สถาบันพระปกเกล้า | King Prajadhipok's Institute</p>
-            <p class="admin-link"><a href="admin.html">เข้าสู่ระบบแอดมิน</a></p>
-        </footer>
+        <!-- Step 3: Confirm Attendance -->
+        <div id="step3" class="step-content">
+          <h2>ยืนยันการเข้าร่วม</h2>
+          <p class="instruction">
+            กรุณาตรวจสอบข้อมูลและยืนยันการเข้าร่วมพิธีมอบใบประกาศนียบัตร
+          </p>
+
+          <div class="student-info-card">
+            <h3>ข้อมูลของท่าน</h3>
+            <div class="info-row">
+              <span class="info-label">หลักสูตร:</span>
+              <span id="confirmCourse" class="info-value"></span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">รหัสนักศึกษา:</span>
+              <span id="confirmStudentId" class="info-value"></span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">ชื่อ-นามสกุล:</span>
+              <span id="confirmFullName" class="info-value"></span>
+            </div>
+          </div>
+
+          <div class="event-info-card">
+            <h3>📅 กำหนดการพิธีมอบใบประกาศนียบัตร</h3>
+            <div class="event-details">
+              <p><strong>วันที่:</strong> วันอังคารที่ 3 กุมภาพันธ์ 2569</p>
+              <p><strong>เวลา:</strong> 11.00 - 16.00 น.</p>
+              <p><strong>สถานที่:</strong> ศาลาดุสิตดาลัย สวนจิตรลดา</p>
+            </div>
+          </div>
+
+          <form id="confirmForm" class="form">
+            <div class="form-section">
+              <h3 class="section-title">ข้อมูลติดต่อ</h3>
+
+              <div class="form-group">
+                <label for="email">อีเมล <span class="required">*</span></label>
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="example@email.com"
+                  required
+                />
+                <small class="field-note"
+                  >สำหรับรับอีเมลยืนยันและแจ้งเตือนก่อนวันงาน</small
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="phone"
+                  >เบอร์โทรศัพท์ <span class="required">*</span></label
+                >
+                <input
+                  type="tel"
+                  id="phone"
+                  placeholder="08X-XXX-XXXX"
+                  pattern="[0-9]{10}|[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                  required
+                />
+                <small class="field-note"
+                  >สำหรับติดต่อกรณีเร่งด่วน (ตัวอย่าง: 0812345678)</small
+                >
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3 class="section-title">การเข้าร่วมพิธี</h3>
+
+              <div class="form-group">
+                <div class="radio-group">
+                  <label class="radio-option attend">
+                    <input
+                      type="radio"
+                      name="attendance"
+                      value="เข้าร่วม"
+                      required
+                    />
+                    <span class="radio-custom"></span>
+                    <span class="radio-text">
+                      <strong>เข้าร่วม</strong>
+                      <small>ท่านจะเข้ารับใบประกาศนียบัตรด้วยตนเอง</small>
+                    </span>
+                  </label>
+                  <label class="radio-option not-attend">
+                    <input
+                      type="radio"
+                      name="attendance"
+                      value="ไม่เข้าร่วม"
+                      required
+                    />
+                    <span class="radio-custom"></span>
+                    <span class="radio-text">
+                      <strong>ไม่สามารถเข้าร่วมได้</strong>
+                      <small
+                        >กรุณาติดต่อเจ้าหน้าที่หลักสูตร
+                        เพื่อแจ้งขอรับประกาศนียบัตรภายหลัง</small
+                      >
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="button-group">
+              <button type="button" class="btn-back" onclick="goToStep(2)">
+                ย้อนกลับ
+              </button>
+              <button type="submit" class="btn-primary btn-large">
+                ยืนยันการลงทะเบียน
+              </button>
+            </div>
+          </form>
+
+          <div
+            id="confirmLoading"
+            class="loading-overlay"
+            style="display: none"
+          >
+            <div class="spinner"></div>
+            <p>กำลังบันทึกข้อมูล...</p>
+          </div>
+        </div>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="step-content">
+          <div class="success-card">
+            <div class="success-icon">✅</div>
+            <h2>ลงทะเบียนสำเร็จ!</h2>
+            <p class="success-text">
+              ขอบคุณที่ลงทะเบียน
+              ระบบได้ส่งอีเมลยืนยันไปยังที่อยู่อีเมลของท่านแล้ว
+            </p>
+            <div id="successDetails" class="success-details"></div>
+            <button class="btn-primary" onclick="location.reload()">
+              กลับหน้าแรก
+            </button>
+          </div>
+        </div>
+
+        <!-- Already Registered -->
+        <div id="alreadyRegistered" class="step-content">
+          <div class="info-card">
+            <div class="info-icon">⚠️</div>
+            <h2>ท่านได้ลงทะเบียนไปแล้ว</h2>
+            <p class="info-text">
+              ระบบตรวจพบว่าท่านได้ทำการลงทะเบียนไว้แล้ว<br /><strong
+                style="color: #ef4444"
+                >ไม่สามารถลงทะเบียนซ้ำได้</strong
+              >
+            </p>
+
+            <div id="registeredDetails" class="registered-details"></div>
+
+            <div class="alert-box warning">
+              <strong>📞 ต้องการแก้ไขข้อมูล?</strong>
+              <p>กรุณาติดต่อเจ้าหน้าที่</p>
+              <p>
+                <strong>โทร:</strong> 02-141-9600<br />
+                <strong>อีเมล:</strong> webmaster@kpi.ac.th
+              </p>
+            </div>
+
+            <button class="btn-primary btn-large" onclick="location.reload()">
+              กลับหน้าแรก
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p>© 2568 สถาบันพระปกเกล้า | King Prajadhipok's Institute</p>
+      </footer>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

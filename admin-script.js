@@ -208,33 +208,9 @@ function hideLoading() {
     document.getElementById('loadingOverlay').classList.remove('active');
 }
 
-// Demo Mode
-if (WEB_APP_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE') {
-    console.log('🔴 Demo Mode');
-    window.fetch = async function(url, options) {
-        await new Promise(r => setTimeout(r, 800));
-        if (url.includes('authenticateAdmin')) {
-            const body = JSON.parse(options.body);
-            return { json: async () => ({ success: true, data: { authenticated: body.password === 'admin' }}) };
-        }
-        if (url.includes('getAdminData')) {
-            const mock = [];
-            ['ปปร.', 'ปรม.', 'ปศส.', 'สสสส.', 'ปบถ.'].forEach(course => {
-                for (let i = 1; i <= 10; i++) {
-                    const hasReg = Math.random() > 0.3;
-                    mock.push({
-                        course,
-                        studentId: `${course.charAt(0)}${String(i).padStart(3, '0')}`,
-                        fullName: `นักศึกษา ${course} คนที่ ${i}`,
-                        email: hasReg ? `student${i}@email.com` : '',
-                        phone: hasReg ? `08${Math.floor(Math.random()*100000000)}` : '',
-                        status: hasReg ? (Math.random() > 0.5 ? 'เข้าร่วม' : 'ไม่เข้าร่วม') : '',
-                        registeredDate: hasReg ? '15/12/2567' : '',
-                        registeredTime: hasReg ? '10:30:00' : ''
-                    });
-                }
-            });
-            return { json: async () => ({ success: true, data: mock }) };
-        }
-    };
-}
+// ========================================
+// Demo Mode - ถูกปิดการใช้งานแล้ว
+// ========================================
+
+// *** ระบบนี้ใช้ JSONP ไม่ต้องการ Demo Mode ***
+// *** กรุณาใส่ WEB_APP_URL ที่ถูกต้องด้านบน ***

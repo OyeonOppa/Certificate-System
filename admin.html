@@ -1,199 +1,247 @@
 <!DOCTYPE html>
 <html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ระบบแอดมิน - ลงทะเบียนรับใบประกาศนียบัตร</title>
-    <link rel="stylesheet" href="admin-style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="admin-style.css" />
+  </head>
+  <body>
     <div class="admin-container">
-        
-        <!-- Login Screen -->
-        <div id="loginScreen" class="login-screen active">
-            <div class="login-box">
-                <div class="login-header">
-                    <h1>🔐 เข้าสู่ระบบแอดมิน</h1>
-                    <p>ระบบลงทะเบียนรับใบประกาศนียบัตร</p>
-                    <p class="institute-name">สถาบันพระปกเกล้า</p>
-                </div>
-                <form id="loginForm" class="login-form">
-                    <div class="form-group">
-                        <label for="adminPassword">รหัสผ่าน</label>
-                        <input type="password" id="adminPassword" placeholder="กรอกรหัสผ่านแอดมิน" required autofocus>
-                    </div>
-                    <button type="submit" class="btn-login">เข้าสู่ระบบ</button>
-                </form>
-                <div class="back-link">
-                    <a href="index.html">← กลับหน้าลงทะเบียน</a>
-                </div>
+      <!-- Login Screen -->
+      <div id="loginScreen" class="login-screen active">
+        <div class="login-box">
+          <div class="login-header">
+            <h1>🔐 เข้าสู่ระบบแอดมิน</h1>
+            <p>ระบบลงทะเบียนรับใบประกาศนียบัตร</p>
+            <p class="institute-name">สถาบันพระปกเกล้า</p>
+          </div>
+          <form id="loginForm" class="login-form">
+            <div class="form-group">
+              <label for="adminPassword">รหัสผ่าน</label>
+              <input
+                type="password"
+                id="adminPassword"
+                placeholder="กรอกรหัสผ่านแอดมิน"
+                required
+                autofocus
+              />
             </div>
+            <button type="submit" class="btn-login">เข้าสู่ระบบ</button>
+          </form>
+          <div class="back-link">
+            <a href="index.html">← กลับหน้าลงทะเบียน</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Dashboard -->
+      <div id="adminDashboard" class="admin-dashboard">
+        <!-- Header -->
+        <header class="admin-header">
+          <div class="header-left">
+            <h1>📊 ระบบแอดมิน</h1>
+            <p>ระบบลงทะเบียนรับใบประกาศนียบัตร - สถาบันพระปกเกล้า</p>
+          </div>
+          <div class="header-right">
+            <button class="btn-refresh" onclick="refreshData()">
+              🔄 รีเฟรช
+            </button>
+            <button class="btn-logout" onclick="logout()">🚪 ออกจากระบบ</button>
+          </div>
+        </header>
+
+        <!-- Summary Cards -->
+        <div class="summary-section">
+          <h2>สรุปภาพรวมทั้งหมด</h2>
+          <div class="summary-grid">
+            <div class="summary-card total">
+              <div class="card-icon">👥</div>
+              <div class="card-content">
+                <div class="card-value" id="totalStudents">0</div>
+                <div class="card-label">นักศึกษาทั้งหมด</div>
+              </div>
+            </div>
+            <div class="summary-card registered">
+              <div class="card-icon">✅</div>
+              <div class="card-content">
+                <div class="card-value" id="totalRegistered">0</div>
+                <div class="card-label">ลงทะเบียนแล้ว</div>
+              </div>
+            </div>
+            <div class="summary-card attending">
+              <div class="card-icon">🎓</div>
+              <div class="card-content">
+                <div class="card-value" id="totalAttending">0</div>
+                <div class="card-label">ยืนยันเข้าร่วม</div>
+              </div>
+            </div>
+            <div class="summary-card not-attending">
+              <div class="card-icon">📮</div>
+              <div class="card-content">
+                <div class="card-value" id="totalNotAttending">0</div>
+                <div class="card-label">ไม่เข้าร่วม</div>
+              </div>
+            </div>
+            <div class="summary-card pending">
+              <div class="card-icon">⏳</div>
+              <div class="card-content">
+                <div class="card-value" id="totalPending">0</div>
+                <div class="card-label">รอลงทะเบียน</div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Admin Dashboard -->
-        <div id="adminDashboard" class="admin-dashboard">
-            
-            <!-- Header -->
-            <header class="admin-header">
-                <div class="header-left">
-                    <h1>📊 ระบบแอดมิน</h1>
-                    <p>ระบบลงทะเบียนรับใบประกาศนียบัตร - สถาบันพระปกเกล้า</p>
-                </div>
-                <div class="header-right">
-                    <button class="btn-refresh" onclick="refreshData()">🔄 รีเฟรช</button>
-                    <button class="btn-logout" onclick="logout()">🚪 ออกจากระบบ</button>
-                </div>
-            </header>
+        <!-- Course Tabs -->
+        <div class="course-tabs-section">
+          <h2>ข้อมูลแยกตามหลักสูตร</h2>
+          <div class="course-tabs">
+            <button
+              class="tab-btn active"
+              data-course="all"
+              onclick="switchCourse('all')"
+            >
+              ทั้งหมด
+            </button>
+            <button
+              class="tab-btn"
+              data-course="ปปร."
+              onclick="switchCourse('ปปร.')"
+            >
+              ปปร.
+            </button>
+            <button
+              class="tab-btn"
+              data-course="ปรม."
+              onclick="switchCourse('ปรม.')"
+            >
+              ปรม.
+            </button>
+            <button
+              class="tab-btn"
+              data-course="ปศส."
+              onclick="switchCourse('ปศส.')"
+            >
+              ปศส.
+            </button>
+            <button
+              class="tab-btn"
+              data-course="สสสส."
+              onclick="switchCourse('สสสส.')"
+            >
+              สสสส.
+            </button>
+            <button
+              class="tab-btn"
+              data-course="ปบถ."
+              onclick="switchCourse('ปบถ.')"
+            >
+              ปบถ.
+            </button>
+          </div>
 
-            <!-- Summary Cards -->
-            <div class="summary-section">
-                <h2>สรุปภาพรวมทั้งหมด</h2>
-                <div class="summary-grid">
-                    <div class="summary-card total">
-                        <div class="card-icon">👥</div>
-                        <div class="card-content">
-                            <div class="card-value" id="totalStudents">0</div>
-                            <div class="card-label">นักศึกษาทั้งหมด</div>
-                        </div>
-                    </div>
-                    <div class="summary-card registered">
-                        <div class="card-icon">✅</div>
-                        <div class="card-content">
-                            <div class="card-value" id="totalRegistered">0</div>
-                            <div class="card-label">ลงทะเบียนแล้ว</div>
-                        </div>
-                    </div>
-                    <div class="summary-card attending">
-                        <div class="card-icon">🎓</div>
-                        <div class="card-content">
-                            <div class="card-value" id="totalAttending">0</div>
-                            <div class="card-label">ยืนยันเข้าร่วม</div>
-                        </div>
-                    </div>
-                    <div class="summary-card not-attending">
-                        <div class="card-icon">📮</div>
-                        <div class="card-content">
-                            <div class="card-value" id="totalNotAttending">0</div>
-                            <div class="card-label">ไม่เข้าร่วม</div>
-                        </div>
-                    </div>
-                    <div class="summary-card pending">
-                        <div class="card-icon">⏳</div>
-                        <div class="card-content">
-                            <div class="card-value" id="totalPending">0</div>
-                            <div class="card-label">รอลงทะเบียน</div>
-                        </div>
-                    </div>
-                </div>
+          <div class="course-stats">
+            <div class="stat-item">
+              <span class="stat-label">นักศึกษาทั้งหมด:</span>
+              <span class="stat-value" id="courseTotal">0</span>
             </div>
-
-            <!-- Course Tabs -->
-            <div class="course-tabs-section">
-                <h2>ข้อมูลแยกตามหลักสูตร</h2>
-                <div class="course-tabs">
-                    <button class="tab-btn active" data-course="all" onclick="switchCourse('all')">ทั้งหมด</button>
-                    <button class="tab-btn" data-course="ปปร." onclick="switchCourse('ปปร.')">ปปร.</button>
-                    <button class="tab-btn" data-course="ปรม." onclick="switchCourse('ปรม.')">ปรม.</button>
-                    <button class="tab-btn" data-course="ปศส." onclick="switchCourse('ปศส.')">ปศส.</button>
-                    <button class="tab-btn" data-course="สสสส." onclick="switchCourse('สสสส.')">สสสส.</button>
-                    <button class="tab-btn" data-course="ปบถ." onclick="switchCourse('ปบถ.')">ปบถ.</button>
-                </div>
-
-                <div class="course-stats">
-                    <div class="stat-item">
-                        <span class="stat-label">นักศึกษาทั้งหมด:</span>
-                        <span class="stat-value" id="courseTotal">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">ลงทะเบียนแล้ว:</span>
-                        <span class="stat-value" id="courseRegistered">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">ยืนยันเข้าร่วม:</span>
-                        <span class="stat-value success" id="courseAttending">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">ไม่เข้าร่วม:</span>
-                        <span class="stat-value warning" id="courseNotAttending">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">รอลงทะเบียน:</span>
-                        <span class="stat-value danger" id="coursePending">0</span>
-                    </div>
-                </div>
+            <div class="stat-item">
+              <span class="stat-label">ลงทะเบียนแล้ว:</span>
+              <span class="stat-value" id="courseRegistered">0</span>
             </div>
+            <div class="stat-item">
+              <span class="stat-label">ยืนยันเข้าร่วม:</span>
+              <span class="stat-value success" id="courseAttending">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">ไม่เข้าร่วม:</span>
+              <span class="stat-value warning" id="courseNotAttending">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">รอลงทะเบียน:</span>
+              <span class="stat-value danger" id="coursePending">0</span>
+            </div>
+          </div>
+        </div>
 
-            <!-- Action Buttons -->
-            <div class="action-buttons">
-                <button class="btn-action primary" onclick="sendReminderToPending()">
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <!--<button class="btn-action primary" onclick="sendReminderToPending()">
                     📧 ส่งอีเมลเตือนผู้ที่ยังไม่กรอก
                 </button>
                 <button class="btn-action secondary" onclick="sendReminderToAttending()">
                     📧 ส่งอีเมลเตือนผู้ที่เข้าร่วม
-                </button>
-                <button class="btn-action success" onclick="exportData()">
-                    📥 Export ข้อมูล (CSV)
-                </button>
-            </div>
-
-            <!-- Search and Filter -->
-            <div class="search-filter-section">
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="🔍 ค้นหา: รหัสนักศึกษา, ชื่อ-นามสกุล, อีเมล..." onkeyup="filterTable()">
-                </div>
-                <div class="filter-box">
-                    <label>กรองตามสถานะ:</label>
-                    <select id="statusFilter" onchange="filterTable()">
-                        <option value="all">ทั้งหมด</option>
-                        <option value="เข้าร่วม">เข้าร่วม</option>
-                        <option value="ไม่เข้าร่วม">ไม่เข้าร่วม</option>
-                        <option value="pending">รอลงทะเบียน</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Data Table -->
-            <div class="table-section">
-                <div class="table-header">
-                    <h3>รายชื่อนักศึกษา</h3>
-                    <div class="table-info">
-                        <span>แสดง <span id="displayCount">0</span> จาก <span id="totalCount">0</span> รายการ</span>
-                    </div>
-                </div>
-                <div class="table-wrapper">
-                    <table id="studentTable" class="data-table">
-                        <thead>
-                            <tr>
-                                <th>ลำดับ</th>
-                                <th>หลักสูตร</th>
-                                <th>รหัสนักศึกษา</th>
-                                <th>ชื่อ-นามสกุล</th>
-                                <th>อีเมล</th>
-                                <th>เบอร์โทร</th>
-                                <th>สถานะ</th>
-                                <th>วันที่ตอบรับ</th>
-                                <th>เวลาที่ตอบรับ</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody">
-                            <tr>
-                                <td colspan="9" class="no-data">กำลังโหลดข้อมูล...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
+                </button>-->
+          <button class="btn-action success" onclick="exportData()">
+            📥 Export ข้อมูล (CSV)
+          </button>
         </div>
 
-        <!-- Loading Overlay -->
-        <div id="loadingOverlay" class="loading-overlay">
-            <div class="spinner"></div>
-            <p id="loadingText">กำลังโหลดข้อมูล...</p>
+        <!-- Search and Filter -->
+        <div class="search-filter-section">
+          <div class="search-box">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="🔍 ค้นหา: รหัสนักศึกษา, ชื่อ-นามสกุล, อีเมล..."
+              onkeyup="filterTable()"
+            />
+          </div>
+          <div class="filter-box">
+            <label>กรองตามสถานะ:</label>
+            <select id="statusFilter" onchange="filterTable()">
+              <option value="all">ทั้งหมด</option>
+              <option value="เข้าร่วม">เข้าร่วม</option>
+              <option value="ไม่เข้าร่วม">ไม่เข้าร่วม</option>
+              <option value="pending">รอลงทะเบียน</option>
+            </select>
+          </div>
         </div>
 
+        <!-- Data Table -->
+        <div class="table-section">
+          <div class="table-header">
+            <h3>รายชื่อนักศึกษา</h3>
+            <div class="table-info">
+              <span
+                >แสดง <span id="displayCount">0</span> จาก
+                <span id="totalCount">0</span> รายการ</span
+              >
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table id="studentTable" class="data-table">
+              <thead>
+                <tr>
+                  <th>ลำดับ</th>
+                  <th>หลักสูตร</th>
+                  <th>รหัสนักศึกษา</th>
+                  <th>ชื่อ-นามสกุล</th>
+                  <th>อีเมล</th>
+                  <th>เบอร์โทร</th>
+                  <th>สถานะ</th>
+                  <th>วันที่ตอบรับ</th>
+                  <th>เวลาที่ตอบรับ</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody">
+                <tr>
+                  <td colspan="9" class="no-data">กำลังโหลดข้อมูล...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading Overlay -->
+      <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <p id="loadingText">กำลังโหลดข้อมูล...</p>
+      </div>
     </div>
 
     <script src="admin-script.js"></script>
-</body>
+  </body>
 </html>
